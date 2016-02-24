@@ -2,11 +2,6 @@ unit module Test::Lab;
 
 use Test::Lab::Experiment;
 
-#| The default context data for an experiment created and run via the
-#| C<lab> helper sub.  Override this in any class that inherits Test::Lab
-#| to define your own behavior
-our %context = Hash.new;
-
 #| Change the default Experiment class to instantiate by modifying
 #| this variable.
 our $experiment-class = Test::Lab::Experiment;
@@ -21,7 +16,6 @@ our $experiment-class = Test::Lab::Experiment;
 #| if an exception was raised.
 sub lab (Str:D $name, &procedure, :$run) is export {
   my $experiment = $experiment-class.new(:$name);
-  $experiment.context(|%context);
 
   &procedure($experiment);
 

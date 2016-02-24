@@ -14,11 +14,7 @@ use-ok 'Test::Lab';
   is $r, 'control', 'provides a helper to instantiate and run experiments';
 }
 
-is-deeply Hash.new, Test::Lab::<%context>, "provides an empty default context";
-
 {
-  Test::Lab::<%context>.push: (:default);
-
   my $experiment;
   lab 'test', -> $e {
     $experiment := $e;
@@ -27,7 +23,6 @@ is-deeply Hash.new, Test::Lab::<%context>, "provides an empty default context";
   }
 
   ok $experiment.defined, "experiment can be bound out of a lab procedure";
-  ok $experiment.context<default>, 'pre-procedure context is kept';
   ok $experiment.context<inline>, 'intra-procedure context is kept';
 }
 
