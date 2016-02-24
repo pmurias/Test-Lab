@@ -14,10 +14,19 @@ our $experiment-class = Test::Lab::Experiment;
 #|
 #| Returns the calculated value of the given $run experiment, or raises
 #| if an exception was raised.
-sub lab (Str:D $name, &procedure, :$run) is export {
+
+sub lab($name, :$use, :$try, :$run='control', :%context) is export {
   my $experiment = $experiment-class.new(:$name);
+  $experiment.context(|%context);
+  
+  $experiment.use($use) if defined $use;
+  if $try ~~ Associative {
+    for $try.kv -> $name, $code {
+      $experiment.try($code, :$name);
+    }
+  } else {
+    $experiment.try($try) if defined $try;
+  }
 
-  &procedure($experiment);
-
-  $experiment.run($run // 'control');
+  $experiment.run($run);
 }
