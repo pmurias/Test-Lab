@@ -37,7 +37,7 @@ class Test::Lab::Experiment {
   #| candidate value, and return true or false.
   has &.comparator is rw;
 
-  has %!context;
+  has %.context;
 
   has Code @!ignorables;
 
@@ -66,12 +66,6 @@ class Test::Lab::Experiment {
   method clean-value($value) {
     CATCH { default { self.died("clean", $_); return $value } }
     with &!cleaner { &!cleaner($value) } else { $value }
-  }
-
-  #| Adds extra experiment data to the %!context
-  method context(*%ctx) {
-    return %!context unless %ctx.elems > 0;
-    for %ctx.kv -> $key, $data { %!context{$key} = $data }
   }
 
   #| Called when an exception throws while running an

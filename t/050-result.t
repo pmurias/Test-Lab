@@ -6,8 +6,8 @@ use Test::Lab::Experiment;
 use Test::Lab::Observation;
 use Test::Lab::Result;
 
-sub it($behavior, &block) {
-  my Test::Lab::Experiment $*ex .= new(:name<experiment>);
+sub it($behavior, &block, *%extra) {
+  my Test::Lab::Experiment $*ex .= new(:name<experiment>, |%extra);
   subtest &block, $behavior;
 }
 
@@ -136,8 +136,7 @@ it 'knows the experiment\'s name', {
   is $r.experiment-name, $*ex.name;
 }
 
-it 'has the context from an experiment', {
-  $*ex.context: :foo<bar>;
+it 'has the context from an experiment', :context(:foo<bar>), {
   my Test::Lab::Observation $a .= new
     :name<a> :experiment($*ex) :block({ 1 });
   my Test::Lab::Observation $b .= new

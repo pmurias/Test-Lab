@@ -16,8 +16,7 @@ our $experiment-class = Test::Lab::Experiment;
 #| if an exception was raised.
 
 sub lab($name, :$use, :$try, :$run='control', :%context) is export {
-  my $experiment = $experiment-class.new(:$name);
-  $experiment.context(|%context);
+  my $experiment = $experiment-class.new(:$name, :%context);
   
   $experiment.use($use) if defined $use;
   if $try ~~ Associative {
